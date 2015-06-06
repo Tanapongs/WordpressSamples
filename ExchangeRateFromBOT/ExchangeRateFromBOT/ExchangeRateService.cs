@@ -11,6 +11,42 @@ namespace ExchangeRateFromBOT
 	public class ExchangeRateService
 	{
 
+
+		public List<ExchangeRateItem> GetItems(XmlDocument xmldoc)
+		{
+			var result = new List<ExchangeRateItem>();
+
+			XmlNodeList items = xmldoc.GetElementsByTagName("item");
+
+			foreach (XmlNode item in items)
+			{
+				var rate = new ExchangeRateItem();
+
+				foreach (XmlNode des in item.ChildNodes)
+				{
+					switch (des.Name)
+					{
+						case "description":
+							{
+								var warr = des.InnerXml.Split('=');
+								var ratedes = warr[1].Trim().Split(' ');
+								rate.Unit = Convert.ToDecimal(ratedes[0]);
+								break;
+							}
+						case "cb:targetCurrency": rate.Currency = des.InnerXml.ToUpper(); break;
+						case "cb:value": rate.Value = Convert.ToDecimal(des.InnerXml); break;
+					}
+
+				}
+
+				result.Add(rate);
+			}
+
+			return result;
+		}
+
+
+
 		public XmlDocument GetXml()
 		{
 			const string url = "http://www2.bot.or.th/RSS/fxrates/fxrate-all.xml";

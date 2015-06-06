@@ -11,7 +11,8 @@ namespace ExchangeRateFromBOT
 		static void Main(string[] args)
 		{
 			var service = new ExchangeRateService();
-			var result = service.GetXml();
+			var xmldoc = service.GetXml();
+			var items = service.GetItems(xmldoc);
 			Console.ReadLine();
 		}
 	}
