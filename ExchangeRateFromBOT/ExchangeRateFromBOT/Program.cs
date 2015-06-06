@@ -10,6 +10,9 @@ namespace ExchangeRateFromBOT
 	{
 		static void Main(string[] args)
 		{
+			var service = new ExchangeRateService();
+			var result = service.GetXml();
+			Console.ReadLine();
 		}
 	}
 }
